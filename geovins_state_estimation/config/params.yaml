@@ -1,0 +1,159 @@
+# GEOVINS Configuration Parameters
+# Geographic Visual-Inertial Navigation System
+
+# System parameters
+system:
+  use_geographic_constraints: true
+  use_loop_closure: false
+  verbose: true
+
+# IMU parameters
+imu:
+  # Noise parameters
+  gyro_noise_density: 1.6968e-04      # rad/s/sqrt(Hz)
+  gyro_random_walk: 1.9393e-05        # rad/s^2/sqrt(Hz)
+  accel_noise_density: 2.0000e-03     # m/s^2/sqrt(Hz)
+  accel_random_walk: 3.0000e-03       # m/s^3/sqrt(Hz)
+
+  # Gravity magnitude
+  gravity: 9.81                        # m/s^2
+
+  # IMU rate
+  rate: 200.0                          # Hz
+
+# Camera parameters
+camera:
+  # Image dimensions
+  width: 640
+  height: 480
+
+  # Intrinsics
+  fx: 458.654               # Focal length x (pixels)
+  fy: 457.296               # Focal length y (pixels)
+  cx: 367.215               # Principal point x (pixels)
+  cy: 248.375               # Principal point y (pixels)
+
+  # Distortion coefficients (radial-tangential)
+  k1: -0.28340811
+  k2: 0.07395907
+  p1: 0.00019359
+  p2: 1.76187114e-05
+  k3: 0.0
+
+  # Camera rate
+  rate: 20.0                # Hz
+
+  # Extrinsic calibration (IMU to Camera)
+  T_cam_imu:
+    translation: [0.0, 0.0, 0.0]       # meters
+    rotation: [1.0, 0.0, 0.0, 0.0]     # quaternion [w, x, y, z]
+
+# Feature tracking parameters
+features:
+  max_features: 200
+  min_track_length: 3
+  max_track_length: 20
+
+  # Detection
+  detector_type: "FAST"
+  quality_level: 0.01
+  min_distance: 10.0         # pixels
+
+  # Grid detection
+  use_grid: true
+  grid_rows: 5
+  grid_cols: 5
+  features_per_cell: 8
+
+  # Tracking
+  window_size: [21, 21]
+  max_pyramid_level: 3
+
+  # Matching
+  match_threshold: 0.7
+  use_ratio_test: true
+  ratio_threshold: 0.8
+
+  # RANSAC
+  ransac_threshold: 3.0      # pixels
+  ransac_max_iterations: 1000
+  ransac_confidence: 0.99
+
+# MSCKF parameters
+msckf:
+  max_camera_states: 20
+
+  # Initial state uncertainty
+  initial_covariance:
+    orientation: 0.01        # rad^2
+    position: 1.0            # m^2
+    velocity: 0.1            # (m/s)^2
+    gyro_bias: 0.01          # (rad/s)^2
+    accel_bias: 0.01         # (m/s^2)^2
+
+  # Measurement noise
+  feature_noise: 1.0         # pixels
+
+# Geographic parameters
+geographic:
+  # Reference location (ENU frame origin)
+  ref_latitude: 0.0          # degrees (MUST BE SET)
+  ref_longitude: 0.0         # degrees (MUST BE SET)
+  ref_altitude: 0.0          # meters (MUST BE SET)
+
+  # GPS parameters
+  use_gps: true
+  gps_position_noise: 5.0    # meters
+  gps_altitude_noise: 10.0   # meters
+  gps_velocity_noise: 0.1    # m/s
+  min_satellites: 4
+
+  # Adaptive noise
+  use_adaptive_gps_noise: true
+
+  # RTK GPS
+  use_rtk: false
+  rtk_horizontal_noise: 0.02 # meters
+  rtk_vertical_noise: 0.05   # meters
+
+  # Outlier detection
+  max_gps_velocity: 100.0    # m/s (360 km/h)
+  max_gps_jump: 50.0         # meters
+
+  # Geographic features
+  use_geo_features: false
+  geo_feature_radius: 100.0  # meters
+
+# Initialization parameters
+initialization:
+  # Static initialization (stationary for initial period)
+  use_static_init: true
+  static_duration: 1.0       # seconds
+
+  # IMU initialization
+  init_imu_samples: 200
+
+  # Gravity initialization
+  estimate_gravity: true
+
+# Output parameters
+output:
+  # Trajectory output
+  save_trajectory: true
+  trajectory_format: "TUM"   # TUM, KITTI, or EuRoC
+
+  # State output
+  save_states: true
+  save_covariance: true
+
+  # Visualization
+  visualize: false
+  visualization_rate: 5.0    # Hz
+
+# Performance parameters
+performance:
+  # Multi-threading
+  num_threads: 4
+
+  # Memory
+  max_memory_mb: 2048

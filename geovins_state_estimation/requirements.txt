@@ -1,0 +1,27 @@
+# Core dependencies
+numpy>=1.20.0
+scipy>=1.7.0
+
+# Configuration
+pyyaml>=5.4.0
+
+# Optional: Computer vision (for actual feature detection/tracking)
+# Uncomment if you want to use OpenCV for visual features
+# opencv-python>=4.5.0
+# opencv-contrib-python>=4.5.0
+
+# Optional: Visualization
+# matplotlib>=3.3.0
+# plotly>=5.0.0
+
+# Optional: Data processing
+# pandas>=1.2.0
+
+# Testing
+pytest>=6.2.0
+pytest-cov>=2.11.0
+
+# Development
+black>=21.0
+flake8>=3.9.0
+mypy>=0.910
